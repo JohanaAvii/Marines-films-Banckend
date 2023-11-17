@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id              Int         @id @default(autoincrement())
+  primerNombre    String      @db.VarChar(12)
+  segundoNombre   String      @db.VarChar(12)
+  PrimerApellido  String      @db.VarChar(12)
+  segundoApellido String      @db.VarChar(12)
+  correo          String      @unique @db.VarChar(50)
+  contrasena      String
+  genero          String      @db.Char(1)
+  telefono        String      @db.VarChar(10)
+  rol             Rol
+  solicitudes     Solicitud[]
+  peliculas       Pelicula[]
+}
+
+enum Rol {
+  USUARIO
+  ADMIN
+  PRODUCTOR
+}
+
+model Pelicula {
+  id                 Int       @id @default(autoincrement())
+  nombre             String    @db.VarChar(50)
+  sipnosis           String
+  fecha_distribucion DateTime
+  duracion           Float
+  distribuidor       String    @db.VarChar(20)
+  isan               String    @db.VarChar(96)
+  url_poster         String
+  aws_url            String?
+  aws_trailer        String?
+  usuario            Usuario   @relation(fields: [usuario_id], references: [id])
+  usuario_id         Int
+  actores            Actores[]
+}
+
+model Solicitud {
+  id              Int      @id @default(autoincrement())
+  estado          String   @db.VarChar(10)
+  fecha_envio     DateTime @default(now())
+  fecha_respuesta DateTime
+  observaciones   String
+  usuario         Usuario  @relation(fields: [usuario_id], references: [id])
+  usuario_id      Int
+}
+
+model Actores {
+  id            Int        @id @default(autoincrement())
+  url_imagen    String
+  url_biografia String
+  pelicula      Pelicula[]
+  pelicula_id   Int
+}
