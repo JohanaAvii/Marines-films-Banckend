@@ -9,11 +9,13 @@ const saveUser = async (user: Usuario): Promise<Usuario | unknown> => {
       reject(error);
     }
     try {
-      const userSaved = await prismaClient.usuario.create({
+      const { contrasena, ...userSaved } = await prismaClient.usuario.create({
         data: user,
       });
       resolve(userSaved);
     } catch (error) {
+      console.log(error);
+
       reject(error);
     } finally {
       prismaClient.$disconnect();
@@ -39,4 +41,23 @@ const getAll = async (): Promise<Usuario[] | unknown> => {
   });
 };
 
-export { getAll, saveUser };
+const findUser = async (email: string): Promise<Usuario | null> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await prismaClient.$connect();
+    } catch (error) {
+      reject(error);
+    }
+    try {
+      const user = await prismaClient.usuario.findUnique({
+        where: { correo: email },
+      });
+      resolve(user);
+    } catch (error) {
+      reject(error);
+    } finally {
+      prismaClient.$disconnect();
+    }
+  });
+};
+export { getAll, saveUser, findUser };

@@ -12,10 +12,10 @@ datasource db {
 
 model Usuario {
   id              Int         @id @default(autoincrement())
-  primerNombre    String      @db.VarChar(12)
-  segundoNombre   String      @db.VarChar(12)
-  PrimerApellido  String      @db.VarChar(12)
-  segundoApellido String      @db.VarChar(12)
+  primerNombre    String      @db.VarChar(20)
+  segundoNombre   String?     @db.VarChar(20)
+  PrimerApellido  String      @db.VarChar(20)
+  segundoApellido String?     @db.VarChar(20)
   correo          String      @unique @db.VarChar(50)
   contrasena      String
   genero          String      @db.Char(1)
@@ -29,6 +29,12 @@ enum Rol {
   USUARIO
   ADMIN
   PRODUCTOR
+}
+
+enum Estados {
+  PENDIENTE
+  RECHAZADA
+  APROBADA
 }
 
 model Pelicula {
@@ -48,12 +54,12 @@ model Pelicula {
 }
 
 model Solicitud {
-  id              Int      @id @default(autoincrement())
-  estado          String   @db.VarChar(10)
-  fecha_envio     DateTime @default(now())
-  fecha_respuesta DateTime
-  observaciones   String
-  usuario         Usuario  @relation(fields: [usuario_id], references: [id])
+  id              Int       @id @default(autoincrement())
+  estado          Estados
+  fecha_envio     DateTime  @default(now())
+  fecha_respuesta DateTime?
+  observaciones   String?
+  usuario         Usuario   @relation(fields: [usuario_id], references: [id])
   usuario_id      Int
 }
 
