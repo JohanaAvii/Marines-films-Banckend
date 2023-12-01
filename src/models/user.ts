@@ -9,7 +9,7 @@ const saveUser = async (user: Usuario): Promise<Usuario | unknown> => {
       reject(error);
     }
     try {
-      const { contrasena, ...userSaved } = await prismaClient.usuario.create({
+      const { password, ...userSaved } = await prismaClient.usuario.create({
         data: user,
       });
       resolve(userSaved);

@@ -2,10 +2,10 @@ import { Context, Env } from "hono";
 import { saveUser } from "../models/user";
 
 const createUser = async (c: Context<Env, "/", {}>) => {
-  const { contrasena, ...body } = await c.req.json();
-  const cryptPassword = Bun.password.hashSync(contrasena);
+  const { password, ...body } = await c.req.json();
+  const cryptPassword = Bun.password.hashSync(password);
   try {
-    const resp = await saveUser({ ...body, contrasena: cryptPassword });
+    const resp = await saveUser({ ...body, password: cryptPassword });
     return c.json(
       {
         error: false,

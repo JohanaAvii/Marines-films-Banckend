@@ -17,7 +17,7 @@ const login = async (c: Context<Env, "/", {}>) => {
         204
       );
     }
-    if (!Bun.password.verifySync(password, user?.contrasena)) {
+    if (!Bun.password.verifySync(password, user?.password)) {
       console.log("Contraseña incorrecta");
       return c.json(
         {
@@ -27,8 +27,8 @@ const login = async (c: Context<Env, "/", {}>) => {
         204
       );
     }
-    const { rol, id, genero } = user;
-    const token = await sign({ rol, id, genero }, process.env.HASH ?? "");
+    const { rol, id } = user;
+    const token = await sign({ rol, id }, process.env.SECRET_SEED ?? "");
 
     return c.json({
       error: false,
@@ -38,6 +38,8 @@ const login = async (c: Context<Env, "/", {}>) => {
       },
     });
   } catch (error) {
+    console.log(error);
+
     return c.json(
       {
         error: true,
