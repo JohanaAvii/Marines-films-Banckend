@@ -1,0 +1,77 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../src/generated/client"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id               Int         @id @default(autoincrement())
+  correo           String      @unique @db.VarChar(50)
+  genero           String      @db.Char(1)
+  telefono         String      @db.VarChar(10)
+  rol              Rol
+  password         String
+  primer_apellido  String      @db.VarChar(20)
+  primer_nombre    String      @db.VarChar(20)
+  segundo_apellido String?     @db.VarChar(20)
+  segundo_nombre   String?     @db.VarChar(20)
+  solicitudes      Solicitud[]
+}
+
+model Pelicula {
+  id                 Int       @id @default(autoincrement())
+  nombre             String    @db.VarChar(50)
+  sipnosis           String
+  fecha_distribucion DateTime
+  promocionar        Boolean?  @default(true)
+  duracion           Float
+  distribuidor       String    @db.VarChar(20)
+  isan               String    @db.VarChar(96)
+  url_poster         String
+  aws_url            String?
+  aws_trailer        String?
+  usuario_id         Int
+  solicitud_id       Int
+  Solicitud          Solicitud @relation(fields: [solicitud_id], references: [id])
+  actores            Actores[] @relation("ActoresToPelicula")
+
+  @@index([solicitud_id], map: "Pelicula_solicitud_id_fkey")
+}
+
+model Solicitud {
+  id              Int        @id @default(autoincrement())
+  estado          Estados
+  fecha_envio     DateTime   @default(now())
+  fecha_respuesta DateTime?
+  observaciones   String?
+  usuario_id      Int
+  Pelicula        Pelicula[]
+  usuario         Usuario    @relation(fields: [usuario_id], references: [id])
+
+  @@index([usuario_id], map: "Solicitud_usuario_id_fkey")
+}
+
+model Actores {
+  id            Int        @id @default(autoincrement())
+  url_imagen    String
+  url_biografia String
+  pelicula_id   Int
+  pelicula      Pelicula[] @relation("ActoresToPelicula")
+}
+
+enum Rol {
+  USUARIO
+  ADMIN
+  PRODUCTOR
+}
+
+enum Estados {
+  PENDIENTE
+  RECHAZADA
+  APROBADA
+}

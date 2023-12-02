@@ -1,4 +1,4 @@
-import { Usuario } from "@prisma/client";
+import { Usuario } from "../generated/client";
 import prismaClient from "../helpers/prismaClient";
 
 const saveUser = async (user: Usuario): Promise<Usuario | unknown> => {

@@ -1,0 +1,22 @@
+version: '1'
+
+networks:
+  marine:
+    external: true
+
+services:
+  autentication-backend:
+    container_name: auth-backend
+    image: marine-auth-backend:0.1.0
+    build: .
+    restart: always
+    environment:
+      PORT: 3000
+      DATABASE_URL: mysql://root:root@MySql:3306/marine-films
+      SECRET_SEED: 08JASj0SJc80CN0NC8NSCNSAcASCNSN08snc08anNCsnasudjL
+      AWS_ACCESS_KEY_ID: AKIAQ5BLAXK3BSWA5EA3
+      AWS_SECRET_ACCESS_KEY: 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
+      BUCKET_NAME: vod-watchfolder-marinesfilmsproyecto
+    networks:
+      - marine
+    
