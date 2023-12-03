@@ -132,7 +132,6 @@ exports.Prisma.PeliculaScalarFieldEnum = {
   url_poster: 'url_poster',
   aws_url: 'aws_url',
   aws_trailer: 'aws_trailer',
-  usuario_id: 'usuario_id',
   solicitud_id: 'solicitud_id'
 };
 
@@ -149,6 +148,11 @@ exports.Prisma.ActoresScalarFieldEnum = {
   id: 'id',
   url_imagen: 'url_imagen',
   url_biografia: 'url_biografia',
+  pelicula_id: 'pelicula_id'
+};
+
+exports.Prisma.ActoresOnPeliculasScalarFieldEnum = {
+  actor_id: 'actor_id',
   pelicula_id: 'pelicula_id'
 };
 
@@ -177,7 +181,8 @@ exports.Prisma.ModelName = {
   Usuario: 'Usuario',
   Pelicula: 'Pelicula',
   Solicitud: 'Solicitud',
-  Actores: 'Actores'
+  Actores: 'Actores',
+  ActoresOnPeliculas: 'ActoresOnPeliculas'
 };
 
 /**
