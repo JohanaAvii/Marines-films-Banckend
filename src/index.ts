@@ -26,4 +26,9 @@ app.post("/login", validateFields(loginSchema), login);
 // Endpoint para crear el primer usuario
 app.post("/8B7HMzd49Aqiyo", createUser);
 
-export default app;
+console.log(`Servidor corriendo en el puerto: ${process.env.PORT}`);
+
+Bun.serve({
+  fetch: app.fetch,
+  port: process.env.PORT,
+});
