@@ -14,7 +14,7 @@ const login = async (c: Context<Env, "/", {}>) => {
           error: false,
           message: "Correo o contraseña incorrecta.",
         },
-        204
+        400
       );
     }
     if (!Bun.password.verifySync(password, user?.password)) {
@@ -24,7 +24,7 @@ const login = async (c: Context<Env, "/", {}>) => {
           error: false,
           message: "Correo o contraseña incorrecta.",
         },
-        204
+        400
       );
     }
     const { rol, id } = user;
