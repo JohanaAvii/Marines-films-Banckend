@@ -9,7 +9,7 @@ import { checkToken } from "./controllers/checkToken";
 // Iniciar el servidor
 const app = new Hono();
 
-app.use("*", cors());
+// app.use("*", cors());
 // Middlewares
 app.use(
   "/users/*",
