@@ -12,7 +12,10 @@ export const checkToken = async (context: Context<Env, "/users/token", {}>) => {
       return context.json({ error: false, message: "verificado" }, 200);
     }
   } catch (error) {
-  } finally {
-    return context.json({ error: false, message: "verificado" }, 403);
+    return context.json({
+      error: true,
+      message: "Error al verificar",
+      body: error,
+    });
   }
 };

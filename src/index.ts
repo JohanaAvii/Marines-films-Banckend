@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { cors } from "hono/cors";
 import { jwt } from "hono/jwt";
 import { getAll, login, createUser } from "./controllers";
 import { loginSchema, userSchema } from "./schemas";
@@ -9,7 +8,6 @@ import { checkToken } from "./controllers/checkToken";
 // Iniciar el servidor
 const app = new Hono();
 
-// app.use("*", cors());
 // Middlewares
 app.use(
   "/users/*",
