@@ -3,7 +3,11 @@ import { getAll as getAllUser } from "../models/user";
 
 const getAll = async (c: Context<Env, "/", {}>) => {
   try {
-    const users = await getAllUser();
+    const { size, page } = await c.req.query();
+    const users = await getAllUser(
+      Number.parseInt(page) ?? 0,
+      Number.parseInt(size) ?? 10
+    );
     return c.json({
       status: 200,
       error: false,

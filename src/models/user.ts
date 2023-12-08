@@ -23,7 +23,10 @@ const saveUser = async (user: Usuario): Promise<Usuario | unknown> => {
   });
 };
 
-const getAll = async (): Promise<Usuario[] | unknown> => {
+const getAll = async (
+  page: number,
+  size: number
+): Promise<Usuario[] | unknown> => {
   return new Promise(async (resolve, reject) => {
     try {
       await prismaClient.$connect();
@@ -31,8 +34,19 @@ const getAll = async (): Promise<Usuario[] | unknown> => {
       reject(error);
     }
     try {
-      const users = await prismaClient.usuario.findMany();
-      resolve(users);
+      const offset = page * size;
+      const users =
+        (await prismaClient.$queryRaw`select correo, genero, id, primer_apellido, rol, primer_nombre, segundo_apellido, segundo_nombre, telefono from Usuario limit ${offset},${size}`) as Usuario[];
+      const count =
+        (await prismaClient.$queryRaw`select count(*) as count from Usuario`) as [
+          { count: string }
+        ];
+      resolve({
+        count: Number.parseInt(count[0].count),
+        next: users.length == size ? page + 1 : null,
+        previous: page > 0 ? page - 1 : null,
+        results: users,
+      });
     } catch (error) {
       reject(error);
     } finally {
