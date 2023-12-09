@@ -70,7 +70,7 @@ const getAll = async (
   });
 };
 
-const findUser = async (email: string) => {
+const findUser = async (email: string): Promise<Usuario | null> => {
   return new Promise(async (resolve, reject) => {
     try {
       await prismaClient.$connect();
