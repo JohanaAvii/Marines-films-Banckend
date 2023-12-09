@@ -33,5 +33,6 @@ COPY --from=prerelease /usr/app/ .
 # COPY --from=prerelease /usr/app/package.json .
 
 # run the app
+RUN bunx prisma generate
 USER bun
 ENTRYPOINT [ "bun", "run", "src/index.ts" ]

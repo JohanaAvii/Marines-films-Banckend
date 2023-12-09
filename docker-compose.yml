@@ -11,9 +11,10 @@ services:
     build: .
     restart: always
     environment:
-      PORT: ${PORT}
-      DATABASE_URL: ${DATABASE_URL}
+      PORT: $PORT
+      DATABASE_URL: $DATABASE_URL
       SECRET_SEED: $SECRET_SEED
+      PRISMA_BINARY: $PRISMA_BINARY
     networks:
       - marine
     
