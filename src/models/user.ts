@@ -35,8 +35,23 @@ const getAll = async (
     }
     try {
       const offset = page * size;
-      const users =
-        (await prismaClient.$queryRaw`select correo, genero, id, primer_apellido, rol, primer_nombre, segundo_apellido, segundo_nombre, telefono from Usuario limit ${offset},${size}`) as Usuario[];
+      const users = await prismaClient.usuario.findMany({
+        take: size,
+        skip: offset,
+        select: {
+          correo: true,
+          genero: true,
+          id: true,
+          primer_apellido: true,
+          primer_nombre: true,
+          rol: true,
+          segundo_apellido: true,
+          segundo_nombre: true,
+          telefono: true,
+        },
+      });
+      // const users =
+      //   (await prismaClient.$queryRaw`select correo, genero, id, primer_apellido, rol, primer_nombre, segundo_apellido, segundo_nombre, telefono from Usuario limit ${offset},${size}`) as Usuario[];
       const count =
         (await prismaClient.$queryRaw`select count(*) as count from Usuario`) as [
           { count: string }
@@ -55,7 +70,7 @@ const getAll = async (
   });
 };
 
-const findUser = async (email: string): Promise<Usuario | null> => {
+const findUser = async (email: string) => {
   return new Promise(async (resolve, reject) => {
     try {
       await prismaClient.$connect();
@@ -65,6 +80,17 @@ const findUser = async (email: string): Promise<Usuario | null> => {
     try {
       const user = await prismaClient.usuario.findUnique({
         where: { correo: email },
+        select: {
+          correo: true,
+          genero: true,
+          id: true,
+          primer_apellido: true,
+          primer_nombre: true,
+          rol: true,
+          segundo_apellido: true,
+          segundo_nombre: true,
+          telefono: true,
+        },
       });
       resolve(user);
     } catch (error) {
