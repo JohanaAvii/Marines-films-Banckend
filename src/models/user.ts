@@ -80,17 +80,6 @@ const findUser = async (email: string) => {
     try {
       const user = await prismaClient.usuario.findUnique({
         where: { correo: email },
-        select: {
-          correo: true,
-          genero: true,
-          id: true,
-          primer_apellido: true,
-          primer_nombre: true,
-          rol: true,
-          segundo_apellido: true,
-          segundo_nombre: true,
-          telefono: true,
-        },
       });
       resolve(user);
     } catch (error) {
