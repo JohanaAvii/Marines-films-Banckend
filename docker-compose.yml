@@ -14,7 +14,7 @@ services:
       PORT: $PORT
       DATABASE_URL: $DATABASE_URL
       SECRET_SEED: $SECRET_SEED
-      PRISMA_BINARY: $PRISMA_BINARY
+      PRISMA_BINARY: '["debian-openssl-1.1.x"]'
     networks:
       - marine
     
