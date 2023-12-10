@@ -89,4 +89,34 @@ const findUser = async (email: string): Promise<Usuario | null> => {
     }
   });
 };
-export { getAll, saveUser, findUser };
+const findUserById = async (id: number) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await prismaClient.$connect();
+    } catch (error) {
+      reject(error);
+    }
+    try {
+      const user = await prismaClient.usuario.findUnique({
+        where: { id },
+        select: {
+          correo: true,
+          genero: true,
+          id: true,
+          primer_apellido: true,
+          primer_nombre: true,
+          rol: true,
+          segundo_apellido: true,
+          segundo_nombre: true,
+          telefono: true,
+        },
+      });
+      resolve(user);
+    } catch (error) {
+      reject(error);
+    } finally {
+      prismaClient.$disconnect();
+    }
+  });
+};
+export { getAll, saveUser, findUser, findUserById };

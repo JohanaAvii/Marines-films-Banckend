@@ -4,6 +4,7 @@ import { getAll, login, createUser } from "./controllers";
 import { loginSchema, userSchema } from "./schemas";
 import { validateFields } from "./middlewares";
 import { checkToken } from "./controllers/checkToken";
+import { gentUser } from "./controllers/getUser";
 
 // Iniciar el servidor
 const app = new Hono();
@@ -26,6 +27,7 @@ app.get("/users/token", checkToken);
 // Endpoint para crear el primer usuario
 app.post("/8B7HMzd49Aqiyo", createUser);
 
+app.get("/users/:id", gentUser);
 console.log(`Servidor corriendo en el puerto: ${process.env.PORT}`);
 
 Bun.serve({
