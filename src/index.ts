@@ -5,6 +5,7 @@ import { loginSchema, userSchema } from "./schemas";
 import { validateFields } from "./middlewares";
 import { checkToken } from "./controllers/checkToken";
 import { gentUser } from "./controllers/getUser";
+import { signUp } from "./controllers/signUp";
 
 // Iniciar el servidor
 const app = new Hono();
@@ -20,9 +21,9 @@ app.use(
 // Rutas
 app.get("/users", getAll);
 app.post("/users", validateFields(userSchema), createUser);
-// app.post("/login", validateFields(loginSchema), login);
 app.post("/login", validateFields(loginSchema), login);
 app.get("/users/token", checkToken);
+app.post("/sign-up", validateFields(userSchema), signUp);
 
 // Endpoint para crear el primer usuario
 app.post("/8B7HMzd49Aqiyo", createUser);
